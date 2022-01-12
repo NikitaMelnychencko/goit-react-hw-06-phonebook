@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { connect } from 'react-redux';
 import * as actions from './redux/contacts/phonebook-actions';
 import useLocalStorage from './hooks/useLocalStorage.js';
@@ -32,13 +31,6 @@ const App = ({ contacts, filter, setContacts, setFilter }) => {
   const deleteContact = contactId => {
     setContacts(contacts.filter(contact => contact.id !== contactId));
   };
-  const filterContact = useMemo(() => {
-    const normalizeFilter = filter.toLowerCase();
-    return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(normalizeFilter),
-    );
-  }, [contacts, filter]);
-
   return (
     <>
       <Section title={'Phonebook'}>
@@ -46,19 +38,25 @@ const App = ({ contacts, filter, setContacts, setFilter }) => {
       </Section>
       <Section title={'Contacts'}>
         <Filter value={filter} onChange={handleChange} />
-        <Contacts contacts={filterContact} deleteContact={deleteContact} />
+        <Contacts contacts={contacts} deleteContact={deleteContact} />
       </Section>
     </>
   );
 };
-
+const contactsFilter = (allContacts, filter) => {
+  const normalizeFilter = filter.toLowerCase();
+  return allContacts.filter(contact =>
+    contact.name.toLowerCase().includes(normalizeFilter),
+  );
+};
 const mapStateToProps = state => {
-  console.log(state.contacts);
+  const { items, filter } = state.contacts;
   return {
-    contacts: state.contacts.items,
-    filter: state.contacts.filter,
+    contacts: contactsFilter(items, filter),
+    filter: filter,
   };
 };
+
 const mapDispatchToProps = dispatch => {
   return {
     setContacts: value => dispatch(actions.addContacts(value)),
