@@ -36,11 +36,7 @@ const App = () => {
     dispatch(actions.addFilter(value));
   };
   const deleteContact = contactId => {
-    dispatch(
-      actions.dellContacts(
-        contacts.filter(contact => contact.id !== contactId),
-      ),
-    );
+    dispatch(actions.dellContacts(contactId));
   };
   return (
     <>
