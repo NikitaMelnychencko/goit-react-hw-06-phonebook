@@ -1,10 +1,5 @@
-import actionTypes from './phonebook-types';
-export const addContacts = value => ({
-  type: actionTypes.ADD_ITEM,
-  payload: value,
-});
+import { createAction } from '@reduxjs/toolkit';
 
-export const addFilter = value => ({
-  type: actionTypes.ADD_FILTER,
-  payload: value,
-});
+export const addContacts = createAction('contacts/addItem');
+export const dellContacts = createAction('contacts/dellContacts');
+export const addFilter = createAction('contacts/addFilter');
